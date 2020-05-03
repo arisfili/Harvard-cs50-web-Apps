@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, redirect, flash
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm, BookSearch
 from models import *
 import requests
 from flask_session import Session
@@ -69,11 +69,26 @@ def login():
 
 @app.route("/home/<string:username>", methods=["POST", "GET"])
 def home_user(username):
-    return render_template("login_home.html")
+    return render_template("login_home.html", username = username)
+
+
+@app.route("/home/<string:username>/booksearch", methods=["POST", "GET"])
+def book_search(username):
+    form = BookSearch()
+    if form.validate_on_submit():
+        isbn = form.isbn.data
+        author = form.author.data
+        title = form.title.data
+        if isbn and author and title == None:
+            flash("fill at least one of the searching data","error")
+            return redirect(url_for("book_search"))
+
+    return render_template("search_book.html", form =form, username = username)
 
 
 def main():
-    db.create_all()
+    # db.drop_all()
+    # db.create_all()
 
 
 if __name__ == "__main__":
