@@ -19,3 +19,9 @@ class LoginForm(FlaskForm):
                         validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class BookSearch(FlaskForm):
+    isbn = StringField('ISBN')
+    author = StringField('Author')
+    title = StringField("Title")
+    submit = SubmitField('Search')
